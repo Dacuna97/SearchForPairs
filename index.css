@@ -1,5 +1,4 @@
 * {
-    border: yellow solid 1px;
     padding: 0;
     margin: 0;
 }
@@ -9,6 +8,7 @@ body {
 }
 
 .header {
+    display:flex;
     top: 0;
     left: 0;
     height: 30%;
@@ -21,4 +21,66 @@ body {
     height: 70%;
     width: 100%;
     position: absolute;
+}
+.header > .init-button{
+    top: 10%;
+    left: 10%;
+    height: 80%;
+    width: 20%;
+    position: relative;
+    background-color: pink;
+    color: white;
+}
+.header > .difficulty{
+    display: flex;
+    flex-direction: column;
+    top: 10%;
+    left: 15%;
+    height: 70%;
+    width: 10%;
+    position: relative;
+    color: white;
+    justify-content: space-between;
+}
+.header > .difficulty > input[type="radio"]{
+    display: flex;
+}
+.header > .clicks{
+    display: flex;
+    top: 10%;
+    left: 15%;
+    height: 50%;
+    width: 20%;
+    position: relative;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+.main > .cards{
+    top: 10%;
+    left: 10%;
+    height: 80%;
+    width: 80%;
+    position: absolute;
+    background-color: white;
+}
+.main > .cards > table tr, td{
+    border: black solid 1px;
+}
+
+.main > .cards > table tr{
+    width: 100%;
+    position: relative;
+}
+
+.main > .cards > table td{
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+.main > .cards > table tr > td > img{
+    height: 100%;
+    width: 100%;
+    display: block;
 }
