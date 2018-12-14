@@ -1,8 +1,33 @@
 "use strict"
 
-$(() => {
-    var game = new SearchPairs(2, 2);
+var params = Object.freeze({
+    EASY: {
+        rows: 2,
+        cols: 6
+    },
+    MEDIUM: {
+        rows: 4,
+        cols: 6
+    },
+    DIFFICULT: {
+        rows: 6,
+        cols: 6
+    }
 });
+
+$(() => {
+    let game = getNewGame();
+
+    $(".init-button").on("click", (event) => {
+        game = getNewGame();
+    });
+});
+
+function getNewGame(){
+    let radioButton = $(".difficulty>label>input[type='radio']:checked");
+    let param = params[radioButton.val().toUpperCase()];
+    return new SearchPairs(param.rows, param.cols);
+}
 
 class SearchPairs {
     constructor(_rows, _cols) {
