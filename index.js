@@ -1,15 +1,22 @@
 "use strict"
 
 $(() => {
-    var game = new SearchPairs(5, 4);
+    var game = new SearchPairs(2, 2);
 });
 
 class SearchPairs {
     constructor(_rows, _cols) {
-        this.rows = _rows;
-        this.cols = _cols;
+        this.reset(_rows, _cols);
+    }
+
+    reset(rows, cols) {
+        this.rows = rows;
+        this.cols = cols;
 
         this.point = undefined;
+
+        this.pairs = this.rows * this.cols / 2;
+        this.counter = 0;
 
         this.matrix = Array(this.rows).fill().map(element => Array(this.cols).fill(undefined));
         this.fillMatrix();
@@ -28,11 +35,15 @@ class SearchPairs {
     }
 
     clickable(point) {
-        return this.matrix[point.x][point.y] != undefined;
+        return this.matrix[point.x][point.y] != undefined && this.matrix[point.x][point.y] < 0;
     }
 
     turnAround(point) {
         this.matrix[point.x][point.y] *= -1;
+    }
+
+    win() {
+        return this.counter == this.pairs;
     }
 
     clickOn(x, y) {
@@ -48,13 +59,19 @@ class SearchPairs {
                 }
             }
         }
-        this.show();
+        if (!this.win()) {
+            this.show();
+        } else {
+            console.log("win");
+        }
     }
 
     check(point) {
-        if (this.matrix[this.point.x][this.point.y] == this.matrix[point.x][point.y]) {
+        if (this.matrix[this.point.x][this.point.y] + this.matrix[point.x][point.y] == 0) {
             this.matrix[this.point.x][this.point.y] = undefined;
             this.matrix[point.x][point.y] = undefined;
+            this.point = undefined;
+            this.counter++;
             return true;
         }
         return false;
