@@ -15,15 +15,47 @@ var params = Object.freeze({
     }
 });
 
+function initTable(game) {
+    for (let i = 0; i < game.rows; ++i) {
+        for (let j = 0; j < game.cols; ++j) {
+            let back_img = $("<img>");
+            back_img.attr("src", "back-card.jpg");
+            back_img.addClass(`${i}`);
+            back_img.addClass(`${j}`);
+            let card = $("<div></div>");
+            card.addClass("card");
+            card = card.append(back_img);
+            card = $(".cards").append(card);
+        }
+    }
+}
+
+function addCards(game) {
+    
+}
+
 $(() => {
     let game = getNewGame();
-
     $(".init-button").on("click", (event) => {
+        $(".card").remove();
         game = getNewGame();
+        initTable(game);
+        addCards(game);
+        $(".card>img").on("click", (event) => {
+            let pos = $(event.target).attr("class");
+            let x = parseInt(pos[0]);
+            let y = parseInt(pos[2]);
+            if (isNaN(y)) {
+                y = x;
+            }
+
+           
+            game.clickOn(x, y);
+        });
     });
 });
 
-function getNewGame(){
+function getNewGame() {
     let radioButton = $(".difficulty>label>input[type='radio']:checked");
     let param = params[radioButton.val().toUpperCase()];
     return new SearchPairs(param.rows, param.cols);
@@ -56,7 +88,7 @@ class SearchPairs {
                 values.splice(number, 1);
             }
         }
-        this.show();
+        //this.show();
     }
 
     clickable(point) {
