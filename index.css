@@ -73,3 +73,6 @@ body {
     margin: 5px;
 }
 
+.hide-img {
+    visibility: hidden;
+}
