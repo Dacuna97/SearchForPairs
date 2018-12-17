@@ -66,11 +66,10 @@ body {
     margin: 0 100px 0 100px;
 }
 
+
 .cards img {
     width: 100px;
     height: 100px;
     margin: 5px;
 }
-.card_img {
-    display: none;
-}
+

@@ -20,10 +20,12 @@ function initTable(game) {
         for (let j = 0; j < game.cols; ++j) {
             let back_img = $("<img>");
             back_img.attr("src", "back-card.jpg");
-            back_img.addClass(`${i}`);
-            back_img.addClass(`${j}`);
+            let num = i*game.cols + j;
+            back_img.addClass(`${num}`);
+            back_img.addClass("back_img");
             let card = $("<div></div>");
             card.addClass("card");
+            card.attr("id",`${num}`);
             card = card.append(back_img);
             card = $(".cards").append(card);
         }
@@ -31,7 +33,25 @@ function initTable(game) {
 }
 
 function addCards(game) {
-    
+    let random_numbers = [];
+    while(random_numbers.length != game.rows * game.cols) {
+        let number = Math.floor(Math.random() * game.pairs);
+        if (random_numbers.filter(element => element == number).length <= 1) {
+            random_numbers.push(number);
+        } 
+    }
+    for (let i = 0; i < game.rows; ++i) {
+        for (let j = 0; j < game.cols; ++j) {
+            let num = i*game.cols + j;
+            let front_img = $("<img>");
+            front_img.attr("src", random_numbers[num] + ".jpg");
+            front_img.addClass(`${i*game.cols + j}`);
+            front_img.addClass("card_img");
+            $(`#${num}`).append(front_img);
+            $(".card_img").hide();
+        }
+    }
+    return random_numbers;
 }
 
 $(() => {
@@ -40,17 +60,16 @@ $(() => {
         $(".card").remove();
         game = getNewGame();
         initTable(game);
-        addCards(game);
+        let random_numbers = addCards(game);
         $(".card>img").on("click", (event) => {
             let pos = $(event.target).attr("class");
-            let x = parseInt(pos[0]);
-            let y = parseInt(pos[2]);
-            if (isNaN(y)) {
-                y = x;
+            let card_type = pos.split(" ");
+            $("."+card_type[0]+"."+card_type[1]).hide();
+            if(card_type[1] === "back_img"){
+                $("."+card_type[0]+".card_img").show();
+            } else {
+                $("."+card_type[0]+".back_img").show();
             }
-
-           
-            game.clickOn(x, y);
         });
     });
 });
