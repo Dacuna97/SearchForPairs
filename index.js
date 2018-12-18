@@ -19,7 +19,7 @@ function initTable(game) {
     for (let i = 0; i < game.rows; ++i) {
         for (let j = 0; j < game.cols; ++j) {
             let back_img = $("<img>");
-            back_img.attr("src", "back-card.jpg");
+            back_img.attr("src", "./resources/back-card.jpg");
             let num = (i * game.cols + j) + 1;
             back_img.attr("id", `${num}`);
             let card = $("<div></div>");
@@ -30,33 +30,12 @@ function initTable(game) {
     }
 }
 
-/*function addCards(game) {
-    let random_numbers = [];
-    while (random_numbers.length != game.rows * game.cols) {
-        let number = Math.floor(Math.random() * game.pairs);
-        if (random_numbers.filter(element => element == number).length <= 1) {
-            random_numbers.push(number);
-        }
-    }
-    for (let i = 0; i < game.rows; ++i) {
-        for (let j = 0; j < game.cols; ++j) {
-            let num = i * game.cols + j;
-            let front_img = $("<img>");
-            front_img.attr("src", random_numbers[num] + ".jpg");
-            front_img.addClass(`${i*game.cols + j}`);
-            front_img.addClass("card_img");
-            $(`#${num}`).append(front_img);
-            $(".card_img").hide();
-        }
-    }
-    return random_numbers;
-}*/
-
 $(() => {
     let game = getNewGame();
     $(".init-button").on("click", (event) => {
         let counter = 0;
         $(".card").remove();
+        $(".header>.cards-guessed>img").remove();
         game = getNewGame();
         initTable(game);
         $(".cards>.card>img").on("click", (event) => {
@@ -68,19 +47,23 @@ $(() => {
                 if (game.point == undefined) { //first click 
                     game.turnAround(point);
                     game.point = point;
-                    $(`#${id}`).attr("src", `${game.matrix[point.x][point.y]}.jpg`);
+                    $(`#${id}`).attr("src", `./resources/${game.matrix[point.x][point.y]}.jpg`);
                 } else { //second click
-                    $(`#${id}`).attr("src", `${game.matrix[point.x][point.y]*-1}.jpg`);
+                    $(`#${id}`).attr("src", `./resources/${game.matrix[point.x][point.y]*-1}.jpg`);
                     setTimeout(() => {
                         if (!game.check(point)) { //not the same
-                            $(`#${id}`).attr("src", "back-card.jpg");
-                            $(`#${game.calculateId(game.point)}`).attr("src", "back-card.jpg");
+                            $(`#${id}`).attr("src", "./resources/back-card.jpg");
+                            $(`#${game.calculateId(game.point)}`).attr("src", "./resources/back-card.jpg");
                             game.turnAround(game.point);
                             game.point = undefined;
                         } else { //yes the same
                             $(`#${id}`).addClass("hide-img");
                             $(`#${game.calculateId(game.point)}`).addClass("hide-img");
                             game.point = undefined;
+                            let src = $(`#${id}`).attr("src");
+                            let card_guessed = $("<img>");
+                            card_guessed.attr("src", src);
+                            $(".header>.cards-guessed").append(card_guessed);
                         }
                         if(game.win()){
                             alert("YOU WIN");

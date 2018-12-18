@@ -14,6 +14,11 @@ body {
     height: 30%;
     width: 100%;
     position: absolute;
+    background-image: url("./resources/background-header.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
 }
 .main {
     top: 30%;
@@ -21,6 +26,10 @@ body {
     height: 70%;
     width: 100%;
     position: absolute;
+    background-image: url("./resources/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 .header > .init-button{
     top: 10%;
@@ -28,8 +37,9 @@ body {
     height: 80%;
     width: 20%;
     position: relative;
-    background-color: pink;
+    background-image: url("./resources/background-button.jpg");
     color: white;
+    border: solid burlywood 3px;
 }
 .header > .difficulty{
     display: flex;
@@ -41,6 +51,7 @@ body {
     position: relative;
     color: white;
     justify-content: space-between;
+    font-weight: bold;
 }
 .header > .difficulty > input[type="radio"]{
     display: flex;
@@ -55,6 +66,24 @@ body {
     color: white;
     justify-content: center;
     align-items: center;
+    border: solid burlywood 3px;
+    background-image: url("./resources/background-button.jpg");
+}
+.header > .cards-guessed {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+    top: 10%;
+    left: 15%;
+    height: 25%;
+    width: 25%;
+}
+.header > .cards-guessed > img{
+    height: 50px;
+    width: 50px;
+    position: relative;
 }
 
 .cards{
@@ -65,7 +94,6 @@ body {
     flex-wrap: wrap;
     margin: 0 100px 0 100px;
 }
-
 
 .cards img {
     width: 100px;
