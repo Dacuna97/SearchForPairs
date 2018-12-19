@@ -32,6 +32,7 @@ function initTable(game) {
 
 $(() => {
     let game = getNewGame();
+    let mutex = false;
     $(".init-button").on("click", (event) => {
         let counter = 0;
         $(".card").remove();
@@ -39,38 +40,44 @@ $(() => {
         game = getNewGame();
         initTable(game);
         $(".cards>.card>img").on("click", (event) => {
-            counter++;
-            $(".header>.clicks>h1").text(`${counter} clicks`);
             let id = $(event.target).attr("id");
             let point = game.calculatePoint(id - 1);
             if (game.clickable(point)) { //if matrix has a negative value in point
                 if (game.point == undefined) { //first click 
+                    counter++;
+                    $(".header>.clicks>h1").text(`${counter} clicks`);
                     game.turnAround(point);
                     game.point = point;
                     $(`#${id}`).attr("src", `./resources/${game.matrix[point.x][point.y]}.jpg`);
                 } else { //second click
-                    $(`#${id}`).attr("src", `./resources/${game.matrix[point.x][point.y]*-1}.jpg`);
-                    setTimeout(() => {
-                        if (!game.check(point)) { //not the same
-                            $(`#${id}`).attr("src", "./resources/back-card.jpg");
-                            $(`#${game.calculateId(game.point)}`).attr("src", "./resources/back-card.jpg");
-                            game.turnAround(game.point);
-                            game.point = undefined;
-                        } else { //yes the same
-                            $(`#${id}`).addClass("hide-img");
-                            $(`#${game.calculateId(game.point)}`).addClass("hide-img");
-                            game.point = undefined;
-                            let src = $(`#${id}`).attr("src");
-                            let card_guessed = $("<img>");
-                            card_guessed.attr("src", src);
-                            $(".header>.cards-guessed").append(card_guessed);
-                        }
-                        if(game.win()){
-                            alert("YOU WIN");
-                        }
-                    }, 300);
+                    if (!mutex) {
+                        mutex = true;
+                        $(`#${id}`).attr("src", `./resources/${game.matrix[point.x][point.y]*-1}.jpg`);
+                        setTimeout(() => {
+                            counter++;
+                            $(".header>.clicks>h1").text(`${counter} clicks`);
+                            if (!game.check(point)) { //not the same
+                                $(`#${id}`).attr("src", "./resources/back-card.jpg");
+                                $(`#${game.calculateId(game.point)}`).attr("src", "./resources/back-card.jpg");
+                                game.turnAround(game.point);
+                                game.point = undefined;
+                            } else { //yes the same
+                                $(`#${id}`).addClass("hide-img");
+                                $(`#${game.calculateId(game.point)}`).addClass("hide-img");
+                                game.point = undefined;
+                                let src = $(`#${id}`).attr("src");
+                                let card_guessed = $("<img>");
+                                card_guessed.attr("src", src);
+                                $(".header>.cards-guessed").append(card_guessed);
+                            }
+                            if (game.win()) {
+                                alert("YOU WIN");
+                            }
+                            mutex = false;
+                        }, 300);
+                    }
                 }
-            }   
+            }
         });
     });
 });
@@ -108,8 +115,6 @@ class SearchPairs {
                 values.splice(number, 1);
             }
         }
-        console.log(this.matrix);
-        //this.show();
     }
 
     clickable(point) {
